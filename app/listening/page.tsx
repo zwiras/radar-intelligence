@@ -9,6 +9,7 @@ import { sourceLabel } from '@/lib/source-label';
 import { SearchBox } from '@/components/search-box';
 import { TranslateBar } from '@/components/translate-bar';
 import { translateMentions, TRANSLATE_LANGS, type Translated } from '@/lib/translate';
+import { countryFlag, countryName } from '@/lib/country-codes';
 
 const SENTIMENTS = ['positive', 'neutral', 'negative'];
 const PERIODS = [
@@ -36,7 +37,7 @@ export default async function ListeningPage({ searchParams }: {
   const sp = await searchParams;
   const semanticTerms = sp.st ? sp.st.split('|').filter(Boolean) : undefined;
   const filters = {
-    source: sp.fonte, sentiment: sp.sentiment, language: sp.lingua,
+    source: sp.fonte, sentiment: sp.sentiment, language: sp.lingua, country: sp.kraj,
     q: sp.q, days: sp.giorni ? Number(sp.giorni) : undefined,
     page: sp.pagina ? Number(sp.pagina) : 1,
     semanticTerms,
@@ -61,7 +62,7 @@ export default async function ListeningPage({ searchParams }: {
     : new Map();
 
   const current = {
-    fonte: sp.fonte, sentiment: sp.sentiment, lingua: sp.lingua, q: sp.q, st: sp.st,
+    fonte: sp.fonte, sentiment: sp.sentiment, lingua: sp.lingua, kraj: sp.kraj, q: sp.q, st: sp.st,
     giorni: sp.giorni, rilevanza: sp.rilevanza, autore: sp.autore, autori: sp.autori, ids: sp.ids,
     tipo: sp.tipo,
     ordina: sp.ordina,
@@ -94,6 +95,9 @@ export default async function ListeningPage({ searchParams }: {
           param="giorni" current={current} />
         <FilterGroup label={t('ui.language', 'Language')} items={data.languages.map((l) => ({ value: l.language!, label: l.language!.toUpperCase() }))}
           param="lingua" current={current} />
+        <FilterGroup label={t('ui.country', 'Country')} items={data.countries.map((c) => ({
+          value: c.country!, label: `${countryFlag(c.country!)} ${c.country === 'pl' ? t('country.pl', 'Poland') : countryName(c.country!)}`,
+        }))} param="kraj" current={current} />
         <FilterGroup label={t('ui.relevance', 'Relevance')} items={[{ value: '4', label: '★ ≥ 4' }, { value: '5', label: '★ 5' }]}
           param="rilevanza" current={current} />
         <FilterGroup label={t('ui.sort', 'Sort')} items={[

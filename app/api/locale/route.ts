@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 
   const { locale } = (await req.json().catch(() => ({}))) as { locale?: string };
-  const value = locale === 'it' ? 'it' : 'en';
+  const value = locale === 'it' || locale === 'pl' ? locale : 'en';
 
   const res = NextResponse.json({ locale: value });
   res.cookies.set('sr_locale', value, {

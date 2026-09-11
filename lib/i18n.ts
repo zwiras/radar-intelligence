@@ -7,7 +7,7 @@ export * from '@/lib/i18n-dict';
 
 export async function getLocale(): Promise<Locale> {
   const v = (await cookies()).get('sr_locale')?.value;
-  return v === 'it' ? 'it' : DEFAULT_LOCALE;
+  return v === 'it' || v === 'pl' ? v : DEFAULT_LOCALE;
 }
 
 /** Traduttore per i componenti server. La chiave non tradotta resta in inglese. */

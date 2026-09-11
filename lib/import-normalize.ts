@@ -103,6 +103,7 @@ export function parseSentiment(v: unknown): { sentiment: string | null; score: n
 const LANGS: Record<string, string> = {
   italiano: 'it', italian: 'it', inglese: 'en', english: 'en', francese: 'fr', french: 'fr',
   tedesco: 'de', german: 'de', spagnolo: 'es', spanish: 'es', portoghese: 'pt', portuguese: 'pt',
+  polski: 'pl', polish: 'pl',
 };
 
 export function parseLanguage(v: unknown): string | null {

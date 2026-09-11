@@ -104,7 +104,8 @@ export async function seedDemo(db: DB) {
   const [project] = await db.insert(schema.projects).values({
     name: 'Artificial Intelligence',
     keywords: ['artificial intelligence', 'generative AI', 'LLM'],
-    languages: ['en'],
+    languages: ['en', 'pl'],
+    countries: ['PL'],
     visibility: 'shared',
     ownerId: 1,
     semanticContext: 'The global AI industry: model releases, regulation, chips, funding, safety and enterprise adoption.',
@@ -122,7 +123,8 @@ export async function seedDemo(db: DB) {
   // ---- Mentions ----
   type Row = typeof schema.mentions.$inferInsert;
   const rows: Row[] = [];
-  const langs = ['en', 'en', 'en', 'en', 'es', 'fr', 'de'];
+  const langs = ['en', 'en', 'en', 'en', 'es', 'fr', 'de', 'pl'];
+  const countries = ['us', 'gb', 'de', 'fr', 'pl'];
   let idc = 0;
   for (let i = 0; i < 190; i++) {
     const source = pick(SOURCES);
@@ -178,6 +180,7 @@ export async function seedDemo(db: DB) {
       community: source === 'reddit' ? pick(SUBREDDITS) : isNews ? pick(OUTLETS) : source === 'youtube' ? pick(NAMES) : undefined,
       publishedAt,
       language: pick(langs),
+      country: pick(countries),
       engagement,
       engagementScore,
       reach: views,

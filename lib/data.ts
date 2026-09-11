@@ -107,7 +107,7 @@ export async function dashboardData(projectId: number) {
 // ---------------------------------------------------------------------------
 
 export type ListeningFilters = {
-  source?: string; sentiment?: string; language?: string; q?: string; days?: number; page?: number;
+  source?: string; sentiment?: string; language?: string; country?: string; q?: string; days?: number; page?: number;
   /** Ricerca semantica: termini espansi dall'AI, cercati in OR */
   semanticTerms?: string[];
   /** Solo contenuti con rilevanza AI >= N stelle */
@@ -131,6 +131,7 @@ export async function listeningData(projectId: number, f: ListeningFilters) {
   if (f.source) conds.push(eq(mentions.source, f.source));
   if (f.sentiment) conds.push(eq(mentions.sentiment, f.sentiment));
   if (f.language) conds.push(eq(mentions.language, f.language));
+  if (f.country) conds.push(eq(mentions.country, f.country.toLowerCase()));
   if (f.days) conds.push(gte(mentions.publishedAt, new Date(Date.now() - f.days * 86400_000)));
   if (f.kind) conds.push(eq(mentions.kind, f.kind));
   // La ricerca guarda anche DENTRO l'articolo, non solo titolo e sommario:
@@ -178,7 +179,12 @@ export async function listeningData(projectId: number, f: ListeningFilters) {
     .where(and(eq(mentions.projectId, projectId), isNotNull(mentions.language)))
     .groupBy(mentions.language).orderBy(desc(sql`count(*)`)).limit(12);
 
-  return { rows, total: Number(count.n), page, pageSize, languages };
+  const countries = await db.select({ country: mentions.country, n: sql<number>`count(*)` })
+    .from(mentions)
+    .where(and(eq(mentions.projectId, projectId), isNotNull(mentions.country)))
+    .groupBy(mentions.country).orderBy(desc(sql`count(*)`)).limit(24);
+
+  return { rows, total: Number(count.n), page, pageSize, languages, countries };
 }
 
 // ---------------------------------------------------------------------------

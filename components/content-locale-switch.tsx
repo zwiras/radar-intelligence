@@ -3,7 +3,8 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, PenLine } from 'lucide-react';
-import { LOCALES, type Locale } from '@/lib/i18n-dict';
+import { LOCALES } from '@/lib/i18n-dict';
+import type { ContentLocale } from '@/lib/content-locale';
 
 /**
  * Lingua in cui l'AI SCRIVE. Volutamente separata dalla lingua dell'interfaccia:
@@ -17,13 +18,13 @@ import { LOCALES, type Locale } from '@/lib/i18n-dict';
  * la prossima generazione manuale.
  */
 export function ContentLocaleSwitch({ current, label, translateEndpoint }: {
-  current: Locale; label?: string; translateEndpoint?: string;
+  current: ContentLocale; label?: string; translateEndpoint?: string;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  function change(locale: Locale) {
+  function change(locale: ContentLocale) {
     if (locale === current || pending) return;
     setError(null);
     startTransition(async () => {

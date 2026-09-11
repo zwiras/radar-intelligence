@@ -20,7 +20,7 @@ type Project = typeof projectsTable.$inferSelect;
 
 const LANGS = [
   ['it', 'Italian'], ['en', 'English'], ['es', 'Spanish'],
-  ['fr', 'French'], ['de', 'German'], ['pt', 'Portuguese'],
+  ['fr', 'French'], ['de', 'German'], ['pt', 'Portuguese'], ['pl', 'Polski'],
 ] as const;
 
 const COUNTRIES = [

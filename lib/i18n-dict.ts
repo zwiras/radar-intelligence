@@ -13,10 +13,11 @@
 // d'origine — la lingua dell'interfaccia non deve alterare la base dati.
 // ---------------------------------------------------------------------------
 
-export type Locale = 'en' | 'it';
+export type Locale = 'en' | 'it' | 'pl';
 export const LOCALES: { code: Locale; flag: string; label: string }[] = [
   { code: 'en', flag: '🇬🇧', label: 'English' },
   { code: 'it', flag: '🇮🇹', label: 'Italiano' },
+  { code: 'pl', flag: '🇵🇱', label: 'Polski' },
 ];
 
 /** Inglese = default (com'è oggi, e com'è il README open source). */
@@ -283,7 +284,38 @@ const IT: Record<string, string> = {
   'landing.seeFeatures': 'Scopri le funzioni',
 };
 
-export const DICT: Record<Locale, Record<string, string>> = { en: {}, it: IT };
+/** Najczęściej używane teksty interfejsu po polsku; brakujący wpis zachowuje angielski fallback. */
+const PL: Record<string, string> = {
+  'nav.monitor': 'Monitorowanie', 'nav.analyze': 'Analiza', 'nav.interpret': 'Interpretacja',
+  'nav.create': 'Tworzenie', 'nav.setup': 'Konfiguracja', 'nav.dashboard': 'Panel główny',
+  'nav.listening': 'Nasłuch', 'nav.media': 'Media', 'nav.alerts': 'Alerty',
+  'nav.changes': 'Co się zmieniło', 'nav.audience': 'Odbiorcy', 'nav.benchmark': 'Benchmark',
+  'nav.content': 'Najlepsze treści', 'nav.messages': 'Przekazy', 'nav.emv': 'Wartość medialna',
+  'nav.insights': 'Analizy', 'nav.people': 'Osoby', 'nav.pov': 'Punkt widzenia',
+  'nav.narratives': 'Narracje', 'nav.timeline': 'Oś czasu', 'nav.ask': 'Zapytaj dane',
+  'nav.studio': 'Studio treści', 'nav.brief': 'Codzienny brief', 'nav.report': 'Raport własny',
+  'nav.tv': 'War Room', 'nav.settings': 'Projekty', 'nav.account': 'Ustawienia', 'nav.logout': 'Wyloguj',
+  'ui.export': 'Eksportuj', 'ui.refresh': 'Odśwież teraz', 'ui.updating': 'Odświeżanie…',
+  'ui.lastUpdate': 'Ostatnia aktualizacja', 'ui.save': 'Zapisz', 'ui.saving': 'Zapisywanie…',
+  'ui.search': 'Szukaj', 'ui.searchPlaceholder': 'Szukaj w treści…', 'ui.showAll': 'Pokaż wszystkie',
+  'ui.loading': 'Ładowanie…', 'ui.noProject': 'Nie skonfigurowano projektu.', 'ui.noData': 'Brak danych.',
+  'ui.previous': 'poprzednia', 'ui.next': 'następna', 'ui.page': 'strona', 'ui.of': 'z',
+  'ui.mentions': 'wzmianki', 'ui.mentionsFound': 'znalezionych wzmianek', 'ui.days': 'dni',
+  'ui.sentiment': 'Wydźwięk', 'ui.source': 'Źródło', 'ui.sources': 'Źródła', 'ui.period': 'Okres',
+  'ui.language': 'Język', 'ui.country': 'Kraj', 'ui.relevance': 'Trafność', 'ui.sort': 'Sortowanie',
+  'ui.positive': 'pozytywny', 'ui.neutral': 'neutralny', 'ui.negative': 'negatywny',
+  'ui.author': 'autor', 'ui.kind': 'Typ', 'ui.articles': 'artykuły', 'ui.posts': 'posty',
+  'country.pl': 'Polska',
+  'page.dashboard.title': 'Panel główny', 'page.listening.title': 'Nasłuch',
+  'page.media.title': 'Media', 'page.audience.title': 'Odbiorcy', 'page.benchmark.title': 'Benchmark',
+  'page.content.title': 'Najlepsze treści', 'page.alerts.title': 'Alerty',
+  'page.settings.title': 'Projekty', 'page.brief.title': 'Codzienny brief',
+  'page.ask.title': 'Zapytaj dane', 'page.studio.title': 'Studio treści',
+  'listening.found': 'znalezionych wzmianek', 'listening.noMentions': 'Brak wzmianek dla tych filtrów.',
+  'listening.h24': '24 godziny', 'listening.d7': '7 dni', 'listening.d30': '30 dni', 'listening.d90': '90 dni',
+};
+
+export const DICT: Record<Locale, Record<string, string>> = { en: {}, it: IT, pl: PL };
 
 /** Versione sincrona per i componenti client, che ricevono già il locale. */
 export function tFor(locale: Locale) {
@@ -293,5 +325,5 @@ export function tFor(locale: Locale) {
 
 /** Formattazione date coerente con la lingua scelta. */
 export function localeTag(locale: Locale): string {
-  return locale === 'it' ? 'it-IT' : 'en-US';
+  return locale === 'it' ? 'it-IT' : locale === 'pl' ? 'pl-PL' : 'en-US';
 }

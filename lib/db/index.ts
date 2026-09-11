@@ -35,7 +35,7 @@ async function init(): Promise<DB> {
     const { drizzle } = await import('drizzle-orm/neon-http');
     db = drizzle(neon(process.env.DATABASE_URL), { schema }) as unknown as DB;
   } else {
-    if (driver !== 'pglite') throw new Error(`Unknown DB_DRIVER: ${driver}`);
+    if (driver !== 'pglite') throw new Error(`Unknown DB_DRIVER: ${driver}`);    
     const { PGlite } = await import('@electric-sql/pglite');
     const { drizzle } = await import('drizzle-orm/pglite');
     const { mkdirSync } = await import('node:fs');
@@ -413,7 +413,8 @@ async function seed(db: DB) {
   const [proj] = await db.insert(schema.projects).values({
     name: 'Artificial Intelligence',
     keywords: ['artificial intelligence', 'generative AI'],
-    languages: ['en'],
+    languages: ['en', 'pl'],
+    countries: ['PL'],
   }).returning();
   await db.insert(schema.benchmarkEntities).values([
     { projectId: proj.id, name: 'OpenAI', keywords: ['OpenAI', 'ChatGPT', 'GPT-5'] },

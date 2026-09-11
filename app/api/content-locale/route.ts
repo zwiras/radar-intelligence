@@ -15,6 +15,6 @@ export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   const { locale } = (await req.json().catch(() => ({}))) as { locale?: string };
-  await setContentLocale(locale === 'it' ? 'it' : 'en');
+  await setContentLocale(locale === 'it' || locale === 'pl' ? locale : 'en');
   return NextResponse.json({ contentLocale: await getContentLocale() });
 }

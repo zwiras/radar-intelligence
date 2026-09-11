@@ -5,7 +5,7 @@ import { callClaude, claudeAvailable, MODELS } from '@/lib/claude';
 
 export const TRANSLATE_LANGS: [string, string][] = [
   ['it', 'Italiano'], ['en', 'English'], ['es', 'Español'], ['fr', 'Français'],
-  ['de', 'Deutsch'], ['pt', 'Português'], ['zh', '中文'], ['ar', 'العربية'],
+  ['de', 'Deutsch'], ['pt', 'Português'], ['pl', 'Polski'], ['zh', '中文'], ['ar', 'العربية'],
 ];
 
 const LANG_NAME: Record<string, string> = Object.fromEntries(TRANSLATE_LANGS);

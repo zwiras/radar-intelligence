@@ -604,7 +604,7 @@ export async function translatePointOfView(
     ...canonical.watch,
   ];
 
-  const targetName = locale === 'it' ? 'Italian' : 'English';
+  const targetName = locale === 'it' ? 'Italian' : locale === 'pl' ? 'Polish' : 'English';
   const system = `You translate market-analysis prose into ${targetName}.
 You receive a JSON array of strings. Return ONLY a JSON array of translated strings:
 - EXACTLY the same number of items, in the same order.

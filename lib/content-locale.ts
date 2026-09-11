@@ -6,17 +6,17 @@ import { getMeta, setMeta } from '@/lib/db';
 // scrivere. Default inglese. NON tocca l'analisi dei dati (sentiment, topic,
 // espansione semantica): quella resta agnostica alla lingua e guidata dalle
 // keyword, per non alterare la base dati.
-export type ContentLocale = 'en' | 'it';
+export type ContentLocale = 'en' | 'it' | 'pl';
 
-const NAMES: Record<ContentLocale, string> = { en: 'English', it: 'Italian' };
+const NAMES: Record<ContentLocale, string> = { en: 'English', it: 'Italian', pl: 'Polish' };
 
 export async function getContentLocale(): Promise<ContentLocale> {
   const v = await getMeta<string>('content_locale');
-  return v === 'it' ? 'it' : 'en';
+  return v === 'it' || v === 'pl' ? v : 'en';
 }
 
 export async function setContentLocale(locale: ContentLocale): Promise<void> {
-  await setMeta('content_locale', locale === 'it' ? 'it' : 'en');
+  await setMeta('content_locale', locale === 'it' || locale === 'pl' ? locale : 'en');
 }
 
 /**

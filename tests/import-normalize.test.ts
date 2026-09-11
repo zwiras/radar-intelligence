@@ -80,6 +80,8 @@ test('parseLanguage: codici, varianti regionali e nomi estesi', () => {
   assert.equal(parseLanguage('en_US'), 'en');
   assert.equal(parseLanguage('Italiano'), 'it');
   assert.equal(parseLanguage('English'), 'en');
+  assert.equal(parseLanguage('Polski'), 'pl');
+  assert.equal(parseLanguage('Polish'), 'pl');
   assert.equal(parseLanguage('klingon'), null);
 });
 

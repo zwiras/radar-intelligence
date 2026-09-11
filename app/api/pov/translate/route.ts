@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   if (!project) return NextResponse.json({ error: 'no project' }, { status: 404 });
 
   const body = await req.json().catch(() => ({}));
-  const locale: ContentLocale = body?.locale === 'it' ? 'it' : 'en';
+  const locale: ContentLocale = body?.locale === 'it' || body?.locale === 'pl' ? body.locale : 'en';
 
   const { pov, reason } = await translatePointOfView(project.id, 90, locale);
   if (!pov) {
