@@ -1,0 +1,35 @@
+# Lightweight, single-container deployment using the embedded PGlite database.
+# Start with: docker compose -f docker-compose.pglite.yml up --build
+services:
+  radar:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: radar-intelligence:pglite-local
+    ports:
+      - "${RADAR_PORT:-3000}:3000"
+    # Optional: copy .env.example to .env to pass connector keys through.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+      # Force the embedded database even when .env contains DATABASE_URL.
+      DB_DRIVER: pglite
+      DATABASE_URL: ""
+      PGLITE_DIR: /app/.data/pglite
+      APP_URL: ${APP_URL:-http://localhost:3000}
+      SESSION_SECRET: ${SESSION_SECRET:-change-me-before-public-deployment}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme}
+      ADMIN_NAME: ${ADMIN_NAME:-Admin}
+      DEMO_MODE: ${DEMO_MODE:-0}
+    volumes:
+      - pglite_data:/app/.data/pglite
+    init: true
+    restart: unless-stopped
+
+volumes:
+  pglite_data:

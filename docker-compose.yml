@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-radar}
+      POSTGRES_USER: ${POSTGRES_USER:-radar}
+      # Set POSTGRES_PASSWORD in .env before exposing Docker outside localhost.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-radar-dev-password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  radar:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: radar-intelligence:local
+    ports:
+      - "${RADAR_PORT:-3000}:3000"
+    # Optional: copy .env.example to .env to pass any connector key through.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+      # `postgres` is direct TCP to this Compose database. Set `neon` together
+      # with a hosted Neon DATABASE_URL to retain the existing Neon variant.
+      DB_DRIVER: ${DB_DRIVER:-postgres}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-radar}:${POSTGRES_PASSWORD:-radar-dev-password}@db:5432/${POSTGRES_DB:-radar}}
+      APP_URL: ${APP_URL:-http://localhost:3000}
+      # Replace this value in .env before exposing the app outside localhost.
+      SESSION_SECRET: ${SESSION_SECRET:-change-me-before-public-deployment}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme}
+      ADMIN_NAME: ${ADMIN_NAME:-Admin}
+      DEMO_MODE: ${DEMO_MODE:-0}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      XAI_API_KEY: ${XAI_API_KEY:-}
+      API_BUDGET_USD: ${API_BUDGET_USD:-}
+      CRON_SECRET: ${CRON_SECRET:-}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    init: true
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

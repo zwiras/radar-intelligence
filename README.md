@@ -318,6 +318,32 @@ cp .env.example .env.local
 # Grok:    XAI_API_KEY=...         (https://console.x.ai)
 ```
 
+### Docker Compose
+
+Run the application with its local PostgreSQL database:
+
+```bash
+docker compose up --build
+# open http://localhost:3000
+```
+
+The `postgres_data` Docker volume preserves the database across restarts. Copy
+`.env.example` to `.env` to configure credentials and optional API keys. Set strong
+`SESSION_SECRET`, `ADMIN_PASSWORD`, and `POSTGRES_PASSWORD` values before exposing
+the stack outside localhost.
+
+For a minimal single-container setup without PostgreSQL, use the embedded PGlite
+database instead:
+
+```bash
+docker compose -f docker-compose.pglite.yml up --build
+# open http://localhost:3000
+```
+
+Its `pglite_data` Docker volume preserves data across restarts. Copy
+`.env.example` to `.env` for API keys and set strong `SESSION_SECRET` and
+`ADMIN_PASSWORD` values before making the service public.
+
 ## Deploy your own
 
 One-click deploy to Vercel (add a free [Neon](https://neon.tech) Postgres and your keys

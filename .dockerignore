@@ -1,0 +1,17 @@
+.git
+.github
+.claude
+.agents
+.codex
+.data
+.next
+node_modules
+coverage
+.env
+.env.local
+*.log
+*.tsbuildinfo
+Dockerfile*
+docker-compose*.yml
+docs
+tests

@@ -2,8 +2,8 @@ import { sql } from 'drizzle-orm';
 import type { PgliteDatabase } from 'drizzle-orm/pglite';
 import * as schema from './schema';
 
-// Un solo tipo per entrambi i driver: l'API di query drizzle è identica,
-// cambia solo il trasporto (Neon HTTP in produzione, PGlite in locale).
+// Un solo tipo per tutti i driver: l'API di query drizzle è identica,
+// cambia solo il trasporto (Neon HTTP, PostgreSQL TCP o PGlite).
 export type DB = PgliteDatabase<typeof schema>;
 
 const g = globalThis as unknown as { __socialRadarDb?: Promise<DB> };
@@ -21,11 +21,21 @@ export function getDb(): Promise<DB> {
 
 async function init(): Promise<DB> {
   let db: DB;
-  if (process.env.DATABASE_URL) {
+  // Zachowujemy istniejący wariant Neon dla każdej obecnej konfiguracji z DATABASE_URL.
+  // Docker Compose ustawia jawnie `postgres`, dzięki czemu łączy się zwykłym TCP.
+  const driver = process.env.DB_DRIVER ?? (process.env.DATABASE_URL ? 'neon' : 'pglite');
+  if (driver === 'postgres') {
+    if (!process.env.DATABASE_URL) throw new Error('DB_DRIVER=postgres requires DATABASE_URL');
+    const { Pool } = await import('pg');
+    const { drizzle } = await import('drizzle-orm/node-postgres');
+    db = drizzle({ client: new Pool({ connectionString: process.env.DATABASE_URL }), schema }) as unknown as DB;
+  } else if (driver === 'neon') {
+    if (!process.env.DATABASE_URL) throw new Error('DB_DRIVER=neon requires DATABASE_URL');
     const { neon } = await import('@neondatabase/serverless');
     const { drizzle } = await import('drizzle-orm/neon-http');
     db = drizzle(neon(process.env.DATABASE_URL), { schema }) as unknown as DB;
   } else {
+    if (driver !== 'pglite') throw new Error(`Unknown DB_DRIVER: ${driver}`);
     const { PGlite } = await import('@electric-sql/pglite');
     const { drizzle } = await import('drizzle-orm/pglite');
     const { mkdirSync } = await import('node:fs');
