@@ -75,8 +75,17 @@ export const rss: Connector = {
   label: 'Custom RSS feeds',
   tier: 'free',
   enabled: () => true,
-  async fetchMentions() {
+  async fetchMentions(q) {
     if (watchedFeeds.length === 0) return [];
-    return collect(watchedFeeds.slice(0, 15).map(fetchFeed));
+    const mentions = await collect(watchedFeeds.slice(0, 15).map(fetchFeed));
+    if (q.anyTerms.length === 0) return mentions;
+
+    // RSS and Atom feeds have no query API, so apply the project's OR terms
+    // locally before an item can be stored in the listening archive.
+    const terms = q.anyTerms.map((term) => term.toLocaleLowerCase());
+    return mentions.filter((mention) => {
+      const content = `${mention.title ?? ''} ${mention.content}`.toLocaleLowerCase();
+      return terms.some((term) => content.includes(term));
+    });
   },
 };
