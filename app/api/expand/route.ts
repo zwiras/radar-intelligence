@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   const { q } = await req.json() as { q: string };
   if (!q?.trim()) return NextResponse.json({ error: 'empty query' }, { status: 400 });
 
-  const langs = project.languages.length ? project.languages.join(', ') : 'it, en';
+  const langs = project.languages.length ? project.languages.join(', ') : 'all languages';
   const text = await callClaude(
     MODELS.haiku, 'semantic_search',
     `Expand the user's search query into terms, synonyms and colloquial expressions that people would ACTUALLY use to express that concept, in these languages: ${langs}.

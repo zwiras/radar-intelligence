@@ -51,7 +51,10 @@ async function fetchFeed(url: string): Promise<RawMention[]> {
 
   return items.slice(0, 40).map((it) => {
     const title = stripHtml(text(it.title));
-    const link = text(it.link) || atomLink(it.link) || text(it.guid) || it.id || '';
+    // Atom <link> elements are usually objects with an @_href attribute.
+    // Resolving it before text() prevents "[object Object]" from being
+    // stored as an article URL.
+    const link = atomLink(it.link) || text(it.link) || text(it.guid) || it.id || '';
     const body = stripHtml(text(it['content:encoded']) || text(it.description) || text(it.summary) || text(it.content));
     const date = it.pubDate ?? it.published ?? it.updated;
     return {

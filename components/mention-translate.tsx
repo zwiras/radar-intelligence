@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Languages, Loader2 } from 'lucide-react';
 
 const LANG_LABEL: Record<string, string> = {
@@ -32,7 +32,12 @@ export function MentionBody({ id, lang, url, title, content, allowTranslate }: {
   const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [showTr, setShowTr] = useState(false);
   const [tr, setTr] = useState<Tr | null>(null);
-  const target = readTarget();
+  // Keep the initial client render identical to the server render. The browser
+  // preference is read only after hydration, when it can safely update the UI.
+  const [target, setTarget] = useState('it');
+  useEffect(() => {
+    setTarget(readTarget());
+  }, []);
 
   const on = showTr && tr !== null;
   const dTitle = on ? (tr!.title ?? title) : title;

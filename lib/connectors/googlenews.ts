@@ -74,12 +74,12 @@ export const googleNews: Connector = {
     // 90 giorni = la stessa finestra di conservazione delle mention.
     const query = `${booleanQuery(q)} when:90d`.trim();
     if (query === 'when:90d') return [];
-    // Con paesi selezionati usiamo le loro edizioni locali; altrimenti
-    // un'edizione per ogni lingua del progetto. Una richiesta per edizione.
+    // Selected countries use their local editions. Without a language filter,
+    // search every supported language edition instead of falling back to one.
     const locales: { loc: Locale; lang?: string }[] = q.countries.length
       ? q.countries.filter((c) => BY_COUNTRY[c]).slice(0, 6).map((c) => ({ loc: BY_COUNTRY[c] }))
-      : q.languages.filter((l) => BY_LANGUAGE[l]).slice(0, 6).map((l) => ({ loc: BY_LANGUAGE[l], lang: l }));
-    if (locales.length === 0) locales.push({ loc: BY_LANGUAGE.en, lang: 'en' });
+      : (q.languages.length ? q.languages : Object.keys(BY_LANGUAGE))
+        .filter((l) => BY_LANGUAGE[l]).slice(0, 6).map((l) => ({ loc: BY_LANGUAGE[l], lang: l }));
     return collect(locales.map(({ loc, lang }) => fetchFeed(query, loc, lang)));
   },
 };

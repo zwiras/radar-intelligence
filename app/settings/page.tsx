@@ -314,12 +314,12 @@ function ProjectFields({ project }: { project: Project | null }) {
         </div>
       </div>
       <fieldset className="text-xs text-slate-400">
-        Languages (news editions and search)
+        Languages (news editions and search; optional — no selection means all languages)
         <div className="mt-1.5 flex flex-wrap gap-3">
           {LANGS.map(([code, label]) => (
             <label key={code} className="flex items-center gap-1.5 text-sm text-slate-300">
               <input type="checkbox" name="languages" value={code}
-                defaultChecked={project ? project.languages.includes(code) : code === 'it' || code === 'en'}
+                defaultChecked={project?.languages.includes(code) ?? false}
                 className="accent-sky-500" />
               {label}
             </label>

@@ -104,13 +104,13 @@ export async function saveAndExpandProject(formData: FormData) {
   if (!id || !data.name) return;
   if (!(await assertCanEdit(id))) return;
   await db.update(projects)
-    .set({ ...data, languages: data.languages.length ? data.languages : ['it', 'en'] })
+    .set(data)
     .where(eq(projects.id, id));
 
   if (data.semanticContext) {
     const { callClaude, claudeAvailable, MODELS } = await import('@/lib/claude');
     if (await claudeAvailable()) {
-      const langs = (data.languages.length ? data.languages : ['it', 'en']).join(', ');
+      const langs = data.languages.length ? data.languages.join(', ') : 'all languages';
       const text = await callClaude(
         MODELS.haiku, 'espansione_progetto',
         `Turn the description of a topic to monitor into EFFECTIVE search terms for news and social, in these languages: ${langs}.
@@ -139,7 +139,7 @@ export async function updateProject(formData: FormData) {
   if (!id || !data.name || data.keywords.length === 0) return;
   if (!(await assertCanEdit(id))) return;
   await db.update(projects)
-    .set({ ...data, languages: data.languages.length ? data.languages : ['it', 'en'] })
+    .set(data)
     .where(eq(projects.id, id));
   revalidatePath('/', 'layout');
 }
@@ -152,7 +152,7 @@ export async function createProject(formData: FormData) {
   const data = parseProjectForm(formData);
   if (!data.name || data.keywords.length === 0) return;
   const [created] = await db.insert(projects)
-    .values({ ...data, ownerId: user.id, languages: data.languages.length ? data.languages : ['it', 'en'] })
+    .values({ ...data, ownerId: user.id })
     .returning();
   revalidatePath('/', 'layout');
   redirect(`/settings?p=${created.id}`);
@@ -168,7 +168,7 @@ export async function createImportProject(formData: FormData) {
   const [created] = await db.insert(projects).values({
     name, mode: 'upload', ownerId: user.id,
     visibility: formData.get('shared') ? 'shared' : 'private',
-    keywords: [], languages: ['en'],
+    keywords: [], languages: [],
   }).returning({ id: projects.id });
   revalidatePath('/', 'layout');
   redirect(`/import?project=${created.id}`);

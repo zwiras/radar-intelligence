@@ -26,9 +26,11 @@ export const newsapi: Connector = {
     const query = parts.join(' ');
     if (!query) return [];
 
-    const lang = q.languages[0] ?? 'it';
+    // Omitting the optional NewsAPI language parameter returns articles in all languages.
+    const lang = q.languages[0];
+    const languageFilter = lang ? `&language=${encodeURIComponent(lang)}` : '';
     const data = await fetchJson<{ articles?: Article[] }>(
-      `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=${lang}&sortBy=publishedAt&pageSize=100&apiKey=${cfg('NEWSAPI_KEY')}`,
+      `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}${languageFilter}&sortBy=publishedAt&pageSize=100&apiKey=${cfg('NEWSAPI_KEY')}`,
     );
     return (data.articles ?? []).map((a) => ({
       source: 'newsapi',
