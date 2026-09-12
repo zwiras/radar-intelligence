@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Languages, Loader2 } from 'lucide-react';
+import { tFor, type Locale } from '@/lib/i18n-dict';
 
 const LANG_LABEL: Record<string, string> = {
   it: 'Italiano', en: 'English', es: 'Español', fr: 'Français',
@@ -31,17 +32,40 @@ export function MentionBody({ id, lang, url, title, content, allowTranslate }: {
 }) {
   const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [showTr, setShowTr] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [canExpand, setCanExpand] = useState(false);
+  const [uiLocale, setUiLocale] = useState<Locale>('en');
   const [tr, setTr] = useState<Tr | null>(null);
+  const contentRef = useRef<HTMLParagraphElement>(null);
   // Keep the initial client render identical to the server render. The browser
   // preference is read only after hydration, when it can safely update the UI.
   const [target, setTarget] = useState('it');
   useEffect(() => {
     setTarget(readTarget());
+    const locale = document.documentElement.lang;
+    setUiLocale(locale === 'it' || locale === 'pl' ? locale : 'en');
   }, []);
 
   const on = showTr && tr !== null;
   const dTitle = on ? (tr!.title ?? title) : title;
   const dContent = on ? tr!.content : content;
+
+  useEffect(() => {
+    const element = contentRef.current;
+    if (!element || on) {
+      setCanExpand(false);
+      return;
+    }
+    if (expanded) {
+      setCanExpand(true);
+      return;
+    }
+    const check = () => setCanExpand(element.scrollHeight > element.clientHeight + 1);
+    check();
+    const observer = new ResizeObserver(check);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [dContent, expanded, on]);
 
   async function toggle() {
     if (state === 'loading') return;
@@ -61,6 +85,7 @@ export function MentionBody({ id, lang, url, title, content, allowTranslate }: {
   }
 
   const label = LANG_LABEL[target] ?? target.toUpperCase();
+  const t = tFor(uiLocale);
   const showBtn = allowTranslate && (!lang || lang !== target);
 
   return (
@@ -73,7 +98,16 @@ export function MentionBody({ id, lang, url, title, content, allowTranslate }: {
         </h3>
       )}
       {dContent && dContent !== dTitle && (
-        <p className={`mt-1 text-sm leading-relaxed text-slate-300 ${on ? '' : 'line-clamp-3'}`}>{dContent}</p>
+        <>
+          <p ref={contentRef} className={`mt-1 whitespace-pre-wrap text-sm leading-relaxed text-slate-300 ${on || expanded ? '' : 'line-clamp-3'}`}>{dContent}</p>
+          {!on && canExpand && (
+            <button onClick={() => setExpanded((value) => !value)}
+              className="mt-1 rounded px-1.5 py-0.5 text-[10px] font-medium text-sky-400 transition hover:bg-sky-500/10 hover:text-sky-300"
+              aria-expanded={expanded}>
+              {expanded ? t('ui.showLess', 'show less') : t('ui.showFull', 'show full')}
+            </button>
+          )}
+        </>
       )}
       {showBtn && (
         <button onClick={toggle} disabled={state === 'loading'}
