@@ -34,6 +34,15 @@ export const hackerNews: Connector = {
   tier: 'free',
   enabled: () => true,
   async fetchMentions(q) {
-    return collect(q.anyTerms.slice(0, 4).map(search));
+    const mentions = await collect(q.anyTerms.slice(0, 4).map(search));
+    if (q.anyTerms.length === 0) return mentions;
+
+    // Algolia search can match metadata not preserved in a returned item.
+    // Recheck the visible title and content before storing it in the archive.
+    const terms = q.anyTerms.map((term) => term.toLocaleLowerCase());
+    return mentions.filter((mention) => {
+      const content = `${mention.title ?? ''} ${mention.content}`.toLocaleLowerCase();
+      return terms.some((term) => content.includes(term));
+    });
   },
 };
