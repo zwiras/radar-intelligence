@@ -33,7 +33,7 @@ export async function GET(req: Request) {
   const pptx = new PptxGenJS();
   pptx.defineLayout({ name: 'WIDE', width: 13.33, height: 7.5 });
   pptx.layout = 'WIDE';
-  pptx.author = 'Radar By Scognamiglio 2026';
+  pptx.author = 'Radar fork maintained by zwiras; original project by Massimo Scognamiglio';
   // Marcatura leggibile da una macchina (AI Act art. 50, par. 2).
   pptx.subject = AI_DISCLOSURE_META.subject;
   pptx.title = `Radar — ${project.name}`;
@@ -41,7 +41,7 @@ export async function GET(req: Request) {
     title: 'DARK',
     background: { color: BG },
     objects: [
-      { text: { text: 'Radar · By Scognamiglio 2026', options: { x: 0.4, y: 7.05, fontSize: 10, color: MUTED } } },
+      { text: { text: 'Radar · Fork maintained by zwiras · Original project by Massimo Scognamiglio', options: { x: 0.4, y: 7.05, fontSize: 8, color: MUTED } } },
       {
         text: {
           text: AI_DISCLOSURE_SHORT,
@@ -70,7 +70,7 @@ export async function GET(req: Request) {
   // ── 1. Copertina
   const s1 = newSlide();
   s1.addText('RADAR', { x: 0.5, y: 2.1, w: 12.3, h: 0.5, fontSize: 20, color: ACCENT, align: 'center', charSpacing: 8 });
-  s1.addText('BY SCOGNAMIGLIO 2026', { x: 0.5, y: 2.55, w: 12.3, h: 0.3, fontSize: 10, color: MUTED, align: 'center', charSpacing: 4 });
+  s1.addText('FORK MAINTAINED BY ZWIRAS · ORIGINAL PROJECT BY MASSIMO SCOGNAMIGLIO', { x: 0.5, y: 2.55, w: 12.3, h: 0.3, fontSize: 7, color: MUTED, align: 'center', charSpacing: 1 });
   s1.addText(project.name, { x: 0.5, y: 2.8, w: 12.3, h: 1.1, fontSize: 48, bold: true, color: TEXT, align: 'center' });
   s1.addText('Media intelligence report', { x: 0.5, y: 4.0, w: 12.3, h: 0.5, fontSize: 20, color: MUTED, align: 'center' });
   s1.addText(

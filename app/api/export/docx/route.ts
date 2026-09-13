@@ -71,7 +71,8 @@ export async function GET(req: Request) {
 
   const children: (Paragraph | Table)[] = [
     // Copertina
-    new Paragraph({ spacing: { before: 2400, after: 200 }, alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'RADAR', bold: true, size: 28, color: ACCENT }), new TextRun({ text: '  ·  By Scognamiglio 2026', size: 18, color: '64748B' })] }),
+    new Paragraph({ spacing: { before: 2400, after: 200 }, alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'RADAR', bold: true, size: 28, color: ACCENT }), new TextRun({ text: '  ·  Fork maintained by zwiras', size: 18, color: '64748B' })] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 }, children: [new TextRun({ text: 'Original project by Massimo Scognamiglio', size: 14, color: '64748B' })] }),
     new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: project.name, bold: true, size: 56 })] }),
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 200 }, children: [new TextRun({ text: 'Media intelligence report', size: 26, color: '64748B' })] }),
     new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: today, size: 22, color: '64748B' })] }),
@@ -409,7 +410,7 @@ export async function GET(req: Request) {
   }));
 
   const doc = new Document({
-    creator: 'Radar By Scognamiglio 2026',
+    creator: 'Radar fork maintained by zwiras; original project by Massimo Scognamiglio',
     // Marcatura leggibile da una macchina (AI Act art. 50, par. 2).
     subject: AI_DISCLOSURE_META.subject,
     keywords: AI_DISCLOSURE_META.keywords,
@@ -426,7 +427,7 @@ export async function GET(req: Request) {
             new Paragraph({
               alignment: AlignmentType.CENTER,
               children: [
-                new TextRun({ text: `Radar By Scognamiglio 2026 — ${project.name} — pag. `, size: 16, color: '94A3B8' }),
+                new TextRun({ text: `Radar · Fork zwiras · Original project Massimo Scognamiglio — ${project.name} — pag. `, size: 16, color: '94A3B8' }),
                 new TextRun({ children: [PageNumber.CURRENT], size: 16, color: '94A3B8' }),
               ],
             }),

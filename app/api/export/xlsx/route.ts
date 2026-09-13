@@ -36,7 +36,7 @@ export async function GET(req: Request) {
   ]);
 
   const wb = new ExcelJS.Workbook();
-  wb.creator = 'Radar By Scognamiglio 2026';
+  wb.creator = 'Radar fork maintained by zwiras; original project by Massimo Scognamiglio';
   wb.created = new Date();
   // Marcatura leggibile da una macchina (AI Act art. 50, par. 2).
   wb.subject = AI_DISCLOSURE_META.subject;

@@ -111,7 +111,7 @@ export default async function SharePage({ params }: { params: Promise<{ token: s
         </section>
 
         <footer className="mt-8 border-t border-[var(--border)] pt-4 text-center text-[11px] text-slate-600">
-          Generato da Radar · By Scognamiglio 2026 — report di sola lettura
+          Generato da Radar · Fork mantenuto da zwiras · Progetto originale di Massimo Scognamiglio — report di sola lettura
         </footer>
       </div>
     </div>

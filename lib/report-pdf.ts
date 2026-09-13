@@ -705,7 +705,7 @@ export async function buildReportPdf(opts: BuildOptions): Promise<Buffer> {
     margins: { top: 56, bottom: 64, left: 56, right: 56 },
     info: {
       Title: `Radar — ${sanitize(project.name)}`,
-      Author: 'Radar By Scognamiglio 2026',
+      Author: 'Radar fork maintained by zwiras; original project by Massimo Scognamiglio',
       // Marcatura leggibile da una macchina (AI Act art. 50, par. 2).
       Subject: sanitize(AI_DISCLOSURE_META.subject),
       Keywords: sanitize(AI_DISCLOSURE_META.keywords),
@@ -720,7 +720,7 @@ export async function buildReportPdf(opts: BuildOptions): Promise<Buffer> {
   // ---- Copertina ----
   doc.moveDown(6);
   doc.font('Helvetica-Bold').fontSize(11).fillColor(ACCENT).text('RADAR', { align: 'center', characterSpacing: 3 });
-  doc.font('Helvetica').fontSize(9).fillColor(MUTED).text('BY SCOGNAMIGLIO 2026', { align: 'center', characterSpacing: 2 });
+  doc.font('Helvetica').fontSize(8).fillColor(MUTED).text('FORK MAINTAINED BY ZWIRAS · ORIGINAL PROJECT BY MASSIMO SCOGNAMIGLIO', { align: 'center', characterSpacing: 1 });
   doc.moveDown(2);
   doc.font('Helvetica-Bold').fontSize(30).fillColor(TEXT).text(sanitize(project.name), { align: 'center' });
   doc.moveDown(0.5);
@@ -804,7 +804,7 @@ export async function buildReportPdf(opts: BuildOptions): Promise<Buffer> {
     doc.font('Helvetica').fontSize(6.5).fillColor(MUTED)
       .text(sanitize(AI_DISCLOSURE_SHORT), c.left, fy - 11, { width: c.contentW, lineBreak: false });
     doc.fontSize(8);
-    doc.text(`Radar · By Scognamiglio 2026 — ${sanitize(project.name)}`, c.left, fy, { width: c.contentW * 0.7, lineBreak: false });
+    doc.text(`Radar · Fork zwiras · Original project Massimo Scognamiglio — ${sanitize(project.name)}`, c.left, fy, { width: c.contentW * 0.7, lineBreak: false });
     doc.text(`pag. ${i + 1} / ${range.count}`, c.right - 120, fy, { width: 120, align: 'right', lineBreak: false });
   }
 

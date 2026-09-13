@@ -141,7 +141,7 @@ export async function GET(req: Request) {
   }
 
   const wb = new ExcelJS.Workbook();
-  wb.creator = 'Radar By Scognamiglio 2026';
+  wb.creator = 'Radar fork maintained by zwiras; original project by Massimo Scognamiglio';
   wb.created = new Date();
   const ws = wb.addWorksheet('Normalizzato');
   ws.columns = COLUMNS.map((c) => ({ header: c.header, key: String(c.key), width: c.width }));

@@ -46,7 +46,8 @@ export default async function CreditsPage() {
         <section className="panel px-5 py-4">
           <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-300"><Heart className="size-4 text-pink-400" /> Made by</h2>
           <div className="flex flex-col gap-2 text-sm text-slate-300">
-            <p><span className="text-slate-500">Creator & product:</span> <span className="font-medium text-slate-100">Massimo Scognamiglio</span> — idea, design, direction and every decision behind Radar.</p>
+            <p><span className="text-slate-500">Original project creator:</span> <span className="font-medium text-slate-100">Massimo Scognamiglio</span> — idea, design, direction and every decision behind Radar.</p>
+            <p><span className="text-slate-500">This version:</span> maintained as a fork by <span className="font-medium text-slate-100">zwiras</span>.</p>
             <p><span className="text-slate-500">Built in pair with:</span> <span className="font-medium text-slate-100">Claude</span> by <Ext href="https://www.anthropic.com">Anthropic</Ext> — the AI collaborator that wrote and shaped the code side by side with the author, and that also powers Radar’s in-app AI features (sentiment, emotion, briefs, clustering, Content Studio…).</p>
             <p className="text-xs text-slate-500">A one-person team plus an AI partner — enterprise-grade media intelligence at a thousandth of the price. And yes, we had a lot of fun together. 🐣</p>
           </div>
@@ -58,11 +59,12 @@ export default async function CreditsPage() {
           <p className="text-sm text-slate-300">
             Radar is <span className="font-medium text-slate-100">free and open source</span> under the{' '}
             <Ext href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL-3.0</Ext> license.
-            © {new Date().getFullYear()} Massimo Scognamiglio and contributors.
+            Original project © Massimo Scognamiglio and contributors.
           </p>
           <p className="mt-2 text-xs text-slate-500">
             If you run a modified version as a network service, the AGPL requires you to make your source available under the same license.
-            Source code: <Ext href="https://github.com/Scognamiglio1969/radar-intelligence">github.com/Scognamiglio1969/radar-intelligence</Ext>.
+            Source code for this version: <Ext href="https://github.com/zwiras/radar-intelligence">github.com/zwiras/radar-intelligence</Ext>.
+            Original project: <Ext href="https://github.com/Scognamiglio1969/radar-intelligence">github.com/Scognamiglio1969/radar-intelligence</Ext>.
           </p>
         </section>
 
@@ -112,7 +114,7 @@ export default async function CreditsPage() {
             Radar is provided <span className="text-slate-300">“as is”, without warranty of any kind</span>. You are responsible for complying with the
             Terms of Service of each data source and with applicable data-protection laws (e.g. GDPR) in your jurisdiction. Some sources restrict
             automated access — enable only what you are entitled to use. AI outputs can be imprecise or biased and should be reviewed before acting on them.
-            To report a security issue, see <Ext href="https://github.com/Scognamiglio1969/radar-intelligence/blob/main/SECURITY.md">SECURITY.md</Ext>.
+            To report a security issue, see <Ext href="https://github.com/zwiras/radar-intelligence/blob/main/SECURITY.md">SECURITY.md</Ext>.
           </p>
         </section>
 

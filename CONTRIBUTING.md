@@ -6,7 +6,7 @@ docs, tests, and especially **internationalization** and **new connectors**.
 ## Getting started
 
 ```bash
-git clone https://github.com/Scognamiglio1969/radar-intelligence.git
+git clone https://github.com/zwiras/radar-intelligence.git
 cd radar-intelligence
 npm install
 npm run dev      # http://localhost:3000, embedded PGlite DB, zero config

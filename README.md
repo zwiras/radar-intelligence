@@ -302,7 +302,7 @@ runs entirely offline. AI features stay idle until you add a key for your chosen
 (Claude, OpenAI or Grok).
 
 ```bash
-git clone https://github.com/Scognamiglio1969/radar-intelligence.git
+git clone https://github.com/zwiras/radar-intelligence.git
 cd radar-intelligence
 npm install
 npm run dev
@@ -349,7 +349,7 @@ Its `pglite_data` Docker volume preserves data across restarts. Copy
 One-click deploy to Vercel (add a free [Neon](https://neon.tech) Postgres and your keys
 when prompted):
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Scognamiglio1969/radar-intelligence)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/zwiras/radar-intelligence)
 
 Minimum production env vars: `DATABASE_URL`, `SESSION_SECRET`. Recommended:
 `ANTHROPIC_API_KEY`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`. See [`.env.example`](.env.example)
@@ -500,5 +500,6 @@ new connectors, tests. See [CHANGELOG.md](CHANGELOG.md) for how the project got 
 
 ## License
 
-[GNU AGPL-3.0](LICENSE) © Massimo Scognamiglio and contributors. If you run a modified
-version as a network service, you must make your source available under the same license.
+[GNU AGPL-3.0](LICENSE). The original project is © Massimo Scognamiglio and contributors;
+this fork is maintained by zwiras. If you run a modified version as a network service, you
+must make your source available under the same license.

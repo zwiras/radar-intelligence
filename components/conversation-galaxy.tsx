@@ -509,7 +509,7 @@ function EggHatch({ onClose }: { onClose: () => void }) {
       </div>
       <p className="mt-2 max-w-md px-6 text-center text-lg font-semibold text-slate-100 opacity-0"
         style={{ transform: 'translateY(14px)', animation: 'eggTextIn .7s ease 2.5s forwards' }}>
-        Massimo Scognamiglio &amp; Anthropic Claude had a lot of fun together 🐣
+        Original project by Massimo Scognamiglio &amp; Anthropic Claude 🐣
       </p>
       <p className="mt-3 text-xs text-slate-500 opacity-0" style={{ animation: 'eggTextIn .6s ease 3.2s forwards' }}>
         (tap anywhere to close)
